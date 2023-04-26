@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.tool.jniTrace.JniTrace;
+import com.tool.jnitrace.JniTrace;
 
 import java.util.ArrayList;
 

@@ -7,7 +7,7 @@
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_tool_jniTrace_JniTrace_startJnitrace(JNIEnv *env, jclass clazz, jobject soname,
+Java_com_tool_jnitrace_JniTrace_startJnitrace(JNIEnv *env, jclass clazz, jobject soname,
                                               jstring filepath) {
     const list<std::string> &clist = parse::jlist2clist(env, soname);
     string path;

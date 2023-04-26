@@ -13,7 +13,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *_vm, void *) {
     JNIEnv *env;
     _vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6);
 
-    jclass tracetest = env->FindClass("com/tool/jniTrace/TraceTest");
+    jclass tracetest = env->FindClass("com/tool/jnitrace/TraceTest");
 
     jmethodID md1 = env->GetStaticMethodID(tracetest, "test4", "(Ljava/lang/String;)I");
     

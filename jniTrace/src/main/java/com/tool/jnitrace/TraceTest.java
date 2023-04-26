@@ -1,4 +1,4 @@
-package com.tool.jniTrace;
+package com.tool.jnitrace;
 
 /**
  * @author Zhenxi on 2022/1/15

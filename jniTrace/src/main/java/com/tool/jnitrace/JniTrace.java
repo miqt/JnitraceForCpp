@@ -1,4 +1,4 @@
-package com.tool.jniTrace;
+package com.tool.jnitrace;
 
 import java.util.ArrayList;
 
