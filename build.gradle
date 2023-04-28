@@ -2,8 +2,19 @@
 plugins {
     id 'com.android.application' version '7.2.2' apply false
     id 'com.android.library' version '7.2.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
+}
+
+ext {
+    //Android 编译版本相关
+    compileSdkVersion = 28
+    minSdkVersion = 21
+    targetSdkVersion = 21
+    ndkVersion = '25.1.8937393'
+
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+

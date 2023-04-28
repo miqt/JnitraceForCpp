@@ -1,33 +1,62 @@
 plugins {
     id 'com.android.library'
 }
-
+def project_name = "jnitrace"
 android {
     compileSdk 32
-
+    ndkVersion = '25.1.8937393'
     defaultConfig {
         minSdk 21
         targetSdk 32
+        ndk {
+            abiFilters 'armeabi-v7a'
+            abiFilters 'arm64-v8a'
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++14"
+                arguments "-DPROJECT_SO_NAME=" + String.valueOf(project_name)
             }
         }
     }
 
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "is_printf_log", "true"
+            buildConfigField "String", "project_name", "\"${project_name}\""
+            externalNativeBuild {
+                cmake {
+                    arguments "-DZHENXI_BUILD_TYPE=DEBUG"
+                    //arguments  "-DPROJECT_SO_NAME="+"\"${project_name}\""
+                }
+            }
+        }
+        release {
+            buildConfigField "boolean", "is_printf_log", "true"
+            buildConfigField "String", "project_name", "\"${project_name}\""
+            shrinkResources false
+            minifyEnabled false
+            zipAlignEnabled false
+            proguardFiles 'proguard-rules.pro'
+            externalNativeBuild {
+                cmake {
+                    arguments "-DZHENXI_BUILD_TYPE=RELEASE"
+                    //arguments  "-DPROJECT_SO_NAME="+"\"${project_name}\""
+                }
+            }
         }
     }
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
-            version "3.18.1"
+            version "3.22.1"
         }
     }
     compileOptions {
@@ -37,4 +66,5 @@ android {
 }
 
 dependencies {
+    api project(path: ':nativeLib')
 }

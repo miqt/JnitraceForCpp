@@ -13,6 +13,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/jniTrace" />
+            <option value="$PROJECT_DIR$/nativeLib" />
+            <option value="$PROJECT_DIR$/testlib" />
           </set>
         </option>
       </GradleProjectSettings>

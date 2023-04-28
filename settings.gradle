@@ -12,6 +12,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "jnitrace"
 include ':app'
 include ':jniTrace'
+include ':nativeLib'
+include ':testlib'

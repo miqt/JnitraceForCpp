@@ -1,68 +1,89 @@
-# For more information about using CMake with Android Studio, read the
-# documentation: https://d.android.com/studio/projects/add-native-code.html
+cmake_minimum_required(VERSION 3.22.1)
+set(CMAKE_ANDROID_ARCH_ABI armeabi-v7a arm64-v8a)
 
-# Sets the minimum version of CMake required to build the native library.
+project(JniTrace)
 
-cmake_minimum_required(VERSION 3.18.1)
-
-# Declares and names the project.
-
-project("jniTrace")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-narrowing -std=c++17")
-#添加内联支持
 enable_language(C ASM)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-narrowing -std=c++20")
 
-include_directories(
-        ./
-        ./log/
-        ./Substrate/
-        ./uitils/
+message(STATUS ">>>>>>>> funJni building ${PROJECT_SO_NAME} ")
 
-)
+string(REGEX REPLACE "(.*)/jniTrace/src.*" "\\1" HomePath ${PROJECT_SOURCE_DIR})
+
+message(STATUS ">>>>>>>> home path -> ${HomePath} ")
+
+
+
+
+add_definitions(-DCORE_SO_NAME="lib${PROJECT_SO_NAME}.so")
+
 
 find_library(
         log-lib
         log
 )
 
-add_library(
-        tracetest
 
-        SHARED
+add_subdirectory(${HomePath}/nativeLib/src/main/cpp/ nativeLib.out)
 
-        test/test.cpp
+add_subdirectory(sec)
+
+include_directories(
+        ./
+        ./includes/
+        ${HomePath}/nativeLib/src/main/cpp/
+        ${HomePath}/nativeLib/src/main/cpp/includes/
 )
 
 
+#if (ZHENXI_BUILD_TYPE STREQUAL "RELEASE")
+#    message(STATUS ">>>>>>>> start build release ！！！！ ")
+#
+#    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
+#    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s")
+#    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Os")
+#    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffunction-sections -fdata-sections")
+#    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fomit-frame-pointer")
+#
+#    add_definitions(-DZHENXI_BUILD_TYPE_NOLOG)
+#    add_definitions(-DZHENXI_BUILD_TYPE_RELEASE)
+#endif ()
+
+
+aux_source_directory(hook hook_src_list)
 
 add_library(
-        jnitrace
+        ${PROJECT_SO_NAME}
 
         SHARED
 
         main.cpp
-        JnitraceForC.cpp
 
-        #Substrate
-        Substrate/hde64.c
-        Substrate/SubstrateDebug.cpp
-        Substrate/SubstrateHook.cpp
-        Substrate/SubstratePosixMemory.cpp
-        Substrate/And64InlineHook.cpp
-
-        uitils/parse.cpp
+        ${hook_src_list}
 )
 
 target_link_libraries(
-        jnitrace
+        ${PROJECT_SO_NAME}
 
         ${log-lib}
 )
 
+#link native lib
 target_link_libraries(
-        tracetest
+        ${PROJECT_SO_NAME}
 
-        ${log-lib}
+        adapter
+        dlfc
+        runtimehook
+        libpath
+
+        utils
+        raw_syscall
+        xunwind #栈回溯
+        xdl
+        linkerHandler#处理linker相关的方法
+        findsyscall
 )
+
 

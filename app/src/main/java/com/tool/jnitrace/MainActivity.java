@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.testlib.NativeLib;
 import com.tool.jnitrace.JniTrace;
 
 import java.util.ArrayList;
@@ -16,9 +17,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("tracetest");
-        JniTrace.startJnitrace(arrayList, null);
+        arrayList.add("testlib");
+        ArrayList<String> funlist  =new ArrayList<>();
+        funlist.add("0");
+//        funlist.add("1");
+//        funlist.add("2");
+//        funlist.add("3");
+//        funlist.add("4");
+        JniTrace.startHookJni(true,arrayList,funlist, getFilesDir().getAbsolutePath()+"/jni.log");
 
-        System.loadLibrary("tracetest");
+        new NativeLib().stringFromJNI();
+        new NativeLib().stringFromJNI();
+        new NativeLib().stringFromJNI();
+        new NativeLib().stringFromJNI();
+        new NativeLib().stringFromJNI();
     }
 }
