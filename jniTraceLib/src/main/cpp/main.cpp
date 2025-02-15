@@ -18,7 +18,7 @@
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_jnitrace_MainActivity_startJnitrace(JNIEnv *env, jobject thiz, jobject jmap,jstring save_path) {
+Java_com_example_jnitrace_JniTrace_startJnitrace(JNIEnv *env, jobject thiz, jobject jmap,jstring save_path) {
     const auto &clist = parse::jlist2clist(env, jmap);
     //如果需要将log保存,filepath写对应路径即可,不需要保存则传nullptr
     auto path = parse::jstring2str(env, save_path);

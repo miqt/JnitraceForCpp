@@ -3,3 +3,4 @@ rootProject.name = "JniTraceforCpp"
 include ':app'
 include ':nativeLib'
 
+include ':jniTraceLib'

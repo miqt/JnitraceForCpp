@@ -5,6 +5,7 @@
 #include "mylibc.h"
 #include "HookUtils.h"
 #include "ZhenxiLog.h"
+#include <fstream>
 
 namespace ZhenxiRunTime::JniTrace {
     /**
@@ -1367,6 +1368,11 @@ void Jnitrace::startjnitrace(JNIEnv *env,
     for (const std::string &str: forbid_list) {
         LOGE("start jni trace forbid_list %s", str.c_str())
     }
+
+    for (const std::string &str: filter_list) {
+        LOGE("start jni trace filter_list %s", str.c_str())
+    }
+
 
     //copy orig list
     forbidSoList = std::list<string>(forbid_list);
